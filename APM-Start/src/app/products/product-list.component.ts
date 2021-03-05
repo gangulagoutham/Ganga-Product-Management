@@ -12,6 +12,7 @@ export class ProductListComponent implements OnInit {
     imageWidth = 50 ;
     imageMargin = 2;
     showImage = false ;
+    erroMessage: string;
 
     constructor(private productService: ProductService ) {
     }
@@ -59,7 +60,12 @@ export class ProductListComponent implements OnInit {
       this.pageTitle = 'Product List' + message;
     }
     ngOnInit(): void {
-      this.products = this.productService.getProducts();
-      this.filteredProducts = this.products;
+      this.productService.getProducts().subscribe({
+      next : products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error : err => this.erroMessage = err
+      });
     }
 }
